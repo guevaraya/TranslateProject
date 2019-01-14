@@ -1,11 +1,9 @@
-Translating  By Guevaraya
-
-Linux/Unix App For Prevention Of RSI (Repetitive Strain Injury)
+如何避免Linux下应用开发过劳死
 ======
 ![workrave-image][1]
 
-[A repetitive strain injury][2] (RSI) is occupational overuse syndrome, non-specific arm pain or work related upper limb disorder. RSI caused from overusing the hands to perform a repetitive task, such as typing, writing, or clicking a mouse. Unfortunately, most people do not understand what RSI is or how dangerous it can be. You can easily prevent RSI using open source software called Workrave.
-
+[A repetitive strain injury][2] (RSI) is A repetitive strain injury overuse syndrome, non-specific arm pain or work related upper limb disorder. RSI caused from overusing the hands to perform a repetitive task, such as typing, writing, or clicking a mouse. Unfortunately, most people do not understand what RSI is or how dangerous it can be. You can easily prevent RSI using open source software called Workrave.
+[重复性应变损伤][2] （RSI）是职业性损伤综合征, 非特异性手臂疼痛或工作引起的上肢障碍. 重复性应变损伤 (RSI) 是由于过低使用双手从事重复性任务，如打字，写和使用鼠标. 不幸的是，大部分人不了解什么是重复性应变损伤 (RSI)以及他的危害有多大. 你可以使用名叫Workrave的开源软件轻松的预防重复性应变损伤 (RSI).
 
 ### What are the symptoms of RSI?
 
