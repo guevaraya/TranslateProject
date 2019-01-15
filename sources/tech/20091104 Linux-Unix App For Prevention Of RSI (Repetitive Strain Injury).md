@@ -1,36 +1,33 @@
-如何避免Linux下应用开发过劳死
+如何在Linux下开发程序避免重复性压迫损伤 
 ======
 ![workrave-image][1]
 
-[A repetitive strain injury][2] (RSI) is A repetitive strain injury overuse syndrome, non-specific arm pain or work related upper limb disorder. RSI caused from overusing the hands to perform a repetitive task, such as typing, writing, or clicking a mouse. Unfortunately, most people do not understand what RSI is or how dangerous it can be. You can easily prevent RSI using open source software called Workrave.
-[重复性应变损伤][2] （RSI）是职业性损伤综合征, 非特异性手臂疼痛或工作引起的上肢障碍. 重复性应变损伤 (RSI) 是由于过低使用双手从事重复性任务，如打字，写和使用鼠标. 不幸的是，大部分人不了解什么是重复性应变损伤 (RSI)以及他的危害有多大. 你可以使用名叫Workrave的开源软件轻松的预防重复性应变损伤 (RSI).
+[重复性压迫损伤][2] （RSI）是职业性损伤综合征, 非特异性手臂疼痛或工作引起的上肢障碍. 重复性压迫损伤 (RSI) 是由于过低使用双手从事重复性任务，如打字，写和使用鼠标. 不幸的是，大部分人不了解什么是重复性压迫损伤 (RSI)以及他的危害有多大. 你可以使用名叫Workrave的开源软件轻松的预防重复性压迫损伤 (RSI).
 
-### What are the symptoms of RSI?
+### 重复性压迫损伤 (RSI)有哪些症状？
 
-I'm quoting from this [page][3]. Do you experience:
+我从[page][3]引用过来的, 看看哪些说的是你：
 
-  1. Fatigue or lack of endurance?
-  2. Weakness in the hands or forearms?
-  3. Tingling, numbness, or loss of sensation?
-  4. Heaviness: Do your hands feel like dead weight?
-  5. Clumsiness: Do you keep dropping things?
-  6. Lack of strength in your hands? Is it harder to open jars? Cut vegetables?
-  7. Lack of control or coordination?
-  8. Chronically cold hands?
-  9. Heightened awareness? Just being slightly more aware of a body part can be a clue that something is wrong.
-  10. Hypersensitivity?
-  11. Frequent self-massage (subconsciously)?
-  12. Sympathy pains? Do your hands hurt when someone else talks about their hand pain?
-
+  1. 疲惫缺乏忍耐力？
+  2. 手掌或上肢乏力
+  3. 疼痛麻木甚至失去知觉？
+  4. 沉重：你有没有感觉手很沉？
+  5. 笨拙: 你有没有感觉抓不紧东西？
+  6. 你有没有感觉手上无力？很难打开罐子或切菜无力？
+  7. 缺乏协调和控制？
+  8. 手总是冰凉的？
+  9. 意识需要提高？稍微注意下身体就发现有毛病了。
+  10. 是否过敏？
+  11. 频繁的自我按摩(潜意识的)？
+  12. 共鸣的疼痛？ 当别人在谈论手痛的时候，你是否也感觉到了手疼？
 
 
-### How to reduce your risk of Developing RSI
 
-  * Take breaks, when using your computer, every 30 minutes or so. Use software such as workrave to prevent RSI.
-  * Regular exercise can prevent all sort of injuries including RSI.
-  * Use good posture. Adjust your computer desk and chair to support muscles necessary for good posture.
+### 如何减少开发者的重复性压迫损伤风险（RSI）
 
-
+  * 使用计算机的时候每个30分钟间隔休息一下。借助软件如 workrave 预防重复性压迫损伤风险（RSI）。
+  * 有规律的锻炼可以预防各种损伤，包括重复性压迫损伤
+  * 使用合理的姿势。调整你的电脑桌和椅子使身体保持一个肌肉放松状态
 
 ### Workrave
 
