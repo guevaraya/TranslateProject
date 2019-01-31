@@ -31,88 +31,93 @@
 
 ### Workrave
 
-Workrave is a free open source software application intended to prevent computer users from developing RSI or myopia. The software periodically locks the screen while an animated character, "Miss Workrave," walks the user through various stretching exercises and urges them to take a coffee break. The program frequently alerts you to take micro-pauses, rest breaks and restricts you to your daily limit. The program works under MS-Windows and Linux, UNIX-like operating systems.
+Workrave 是一款预防计算机用户患重复性损伤（RSI）或近视。软件会定期锁屏成一个动画， “ Miss Workrave，”引导用户做各种伸展运动并敦促其休息一下。这个软件经常提醒你暂停休息一下并限制你每天的活动。程序可以运行在 MS-Window ， Linux以及类UNIX操作系统下。
 
-#### Install workrave
 
-Type the following [apt command][4]/[apt-get command][5] under a Debian / Ubuntu Linux:
+#### 安装 workrave
+
+在Debian/Ubuntu Linux系统运行以下 [apt 命令][4]/[apt-get 命令][5]：
 `$ sudo apt-get install workrave`
-Fedora Linux user should type the following dnf command:
+Fedora Linux 发行版用户运行一下dnf命令：
 `$ sudo dnf install workrave`
-RHEL/CentOS Linux user should enable EPEL repo and install it using [yum command][6]:
+RHEL/CentOS Linux 用户可以启动EPEL repo并用[yum 命令][6]安装
 ```
-### [ **tested on a CentOS/RHEL 7.x and clones** ] ###
+### [ **在CentOS/RHEL 7.x 及衍生版本上测试** ] ###
 $ sudo yum install epel-release
 $ sudo yum install https://rpms.remirepo.net/enterprise/remi-release-7.rpm
 $ sudo yum install workrave
 ```
-Arch Linux user type the following pacman command to install it:
+Arch Linux用户运行以下pacman命令来安装：
 `$ sudo pacman -S workrave`
-FreeBSD user can install it using the following pkg command:
+FreeBSD 用户可用一下pkg命令安装：
 `# pkg install workrave`
-OpenBSD user can install it using the following pkg_add command
+OpenBSD 用户可用一下pkg_add命令安装：
 ```
 $ doas pkg_add workrave
 ```
 
-#### How to configure workrave
+#### 如何配置 workrave
 
 Workrave works as an applet which is a small application whose user interface resides within a panel. You need to add workrave to panel to control behavior and appearance of the software.
+Workrave 以一个小程序运行，他的用户界面位于面板中。你可以为 workrave 增加一个面板来控制软件的动作和外观。
 
-##### Adding a New Workrave Object To Panel
+##### 增加一个新workrave对象到面板
 
-  * Right-click on a vacant space on a panel to open the panel popup menu.
+  * 在面板空白区域右键，打开面板弹出菜单
   * Choose Add to Panel.
-  * The Add to Panel dialog opens.The available panel objects are listed alphabetically, with launchers at the top. Select workrave applet and click on Add button.
+  * 选择新增到面板
+  * 新增面板对话框打开，在加载器顶部，可以看到可用的面板对象按照字母排列。选中 workrave 程序并单击新增。
+
 
 ![Fig.01: Adding an Object \(Workrave\) to a Panel][7]
-Fig.01: Adding an Object (Workrave) to a Panel
+Fig.01: 新增workrave对象到面板
 
-##### How Do I Modify Properties Of Workrave Software?
+##### 如何设置Workrave属性?
 
-To modify the properties of an object workrave, perform the following steps:
+修改workrave对象的属性，执行以下步骤：
 
-  * Right-click on the workrave object to open the panel object popup.
-  * Choose Preference. Use the Properties dialog to modify the properties as required.
+  * 右键workrave对象打开面板对象弹出
+  * 选中偏好。使用属性对话框修改对应属性
 
 ![](https://www.cyberciti.biz/media/new/tips/2009/11/linux-gnome-workwave-preferences-.png)
-Fig.02: Modifying the Properties of The Workrave Software
+Fig.02: 修改Workrave对象属性
 
-#### Workrave in Action
+#### Workrave 运行展示
 
 The main window shows the time remaining until it suggests a pause. The windows can be closed and you will the time remaining on the panel itself:
+主窗口显示下一次提醒休息的剩余时间，这个窗口可以关闭，时间提示窗口会在面板上。
 ![Fig.03: Time reaming counter ][8]
-Fig.03: Time reaming counter
+Fig.03:时间计数器
 
 ![Fig.04: Miss Workrave - an animated character walks you through various stretching exercises][9]
-Fig.04: Miss Workrave - an animated character walks you through various stretching exercises
+Fig.04: Workrave 小姐- 引导你做伸展运动的动画
 
-The break prelude window, bugging you to take a micro-pause:
+休息提示窗口，请求你暂停一下工作
 ![Fig.05: Time for a micro-pause remainder ][10]
-Fig.05: Time for a micro-pause remainder
+Fig.05: 休息提示倒计时
 
 ![Fig.06: You can skip Micro-break ][11]
-Fig.06: You can skip Micro-break
+Fig.06: 你可以跳过休息按钮
 
-##### References:
+##### 参考链接:
 
-  1. [Workrave project][12] home page.
-  2. [pokoy][13] lightweight daemon that helps prevent RSI and other computer related stress.
-  3. [A Pomodoro][14] timer for GNOME 3.
-  4. [RSI][2] from the wikipedia.
+  1. [Workrave 项目][12] 主页 工
+  2. [pokoy][13] 轻量级防止重复性压迫损伤（RSI）和其他计算机压力的程序
+  3. GNOME 3下的[一个Pomodoro][14] 计数器 .
+  4. [RSI][2] 的维基百科
 
 
 
-### about the author
+### 关于作者
 
-The author is the creator of nixCraft and a seasoned sysadmin and a trainer for the Linux operating system/Unix shell scripting. He has worked with global clients and in various industries, including IT, education, defense and space research, and the nonprofit sector. Follow him on [Twitter][15], [Facebook][16], [Google+][17].
+作者是nixCraft创始人，经验丰富的系统管理员同时是一个Linux系统/Unix的 shell脚本培训师。他服务于全球客户，并与多个行业合作保护IT，教育，国防和航天研究，以及非盈利机构。可以[Twitter][15], [Facebook][16], [Google+][17]关注他。
 
 --------------------------------------------------------------------------------
 
 via: https://www.cyberciti.biz/tips/repetitive-strain-injury-prevention-software.html
 
 作者：[Vivek Gite][a]
-译者：[译者ID](https://github.com/译者ID)
+译者：[guevaraya](https://github.com/guevaraya)
 校对：[校对者ID](https://github.com/校对者ID)
 
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
