@@ -1,5 +1,5 @@
 [#]: collector: (lujun9972)
-[#]: translator: (Guevaraya)
+[#]: translator: ( )
 [#]: reviewer: ( )
 [#]: publisher: ( )
 [#]: url: ( )
@@ -7,34 +7,33 @@
 [#]: via: (https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/input02.html)
 [#]: author: (Alex Chadwick https://www.cl.cam.ac.uk)
 
-Computer Laboratory – Raspberry Pi: Lesson 11 Input02
+计算机实验室 – 树莓派开发: 课程11 输入02
 ======
 
-The Input02 lesson builds on Input01, by building a simple command line interface where the user can type commands and the computer interprets and displays them. It is assumed you have the code for the [Lesson 11: Input01][1] operating system as a basis.
+课程输入02是以课程输入01基础讲解的，通过一个简单的命令行实现用户的命令输入和计算机的处理和显示。本文假设你已经具备 [课程11：输入01][1] 的操作系统代码基础。
 
-### 1 Terminal 1
+### 1 终端
 
 ```
-In the early days of computing, there would usually be one large computer in a building, and many 'terminals' which sent commands to it. The computer would take it in turns to execute different incoming commands.
+早期的计算一般是在一栋楼里的一个巨型计算机系统，他有很多可以输命令的'终端'。计算机依次执行不同来源的命令。
 ```
 
-Almost every operating system starts life out as a text terminal. This is typically a black screen with white writing, where you type commands for the computer to execute on the keyboard, and it explains how you've mistyped them, or very occasionally, does what you want. This approach has two main advantages: it provides a simple, robust control mechanism for the computer using only a keyboard and monitor, and it is done by almost every operating system, so is widely understood by system administrators.
+几乎所有的操作系统都是以字符终端显示标志它的。经典的黑底白字，通过键盘输入计算机要执行的命令，然后会提示你拼写错误，或者恰好得到你想要的执行结果。这种方法有两个主要优点：键盘和显示器可以提供简易，健壮计算机控制机制，几乎所有的计算机系统都采用这个机制，这个也广泛被系统管理员应用。
 
-Let's analyse what we want to do precisely:
+让我们分析下我们真的想要那些信息：
 
-  1. Computer turns on, displays some sort of welcome message
-  2. Computer indicates its ready for input
-  3. User types a command, with parameters, on the keyboard
-  4. User presses return or enter to commit the command
-  5. Computer interprets command and performs actions if command is acceptable
-  6. Computer displays messages to indicate if command was successful, and also what happened
-  7. Loop back to 2
+1. 计算机打开后，显示欢迎信息
+2. 计算机启动后可以接受输入标志
+3. 用户从键盘输入带参数的命令
+4. 用户输入回车键或提交按钮
+5. 计算机解析命令后执行可用的命令
+6. 计算机显示命令的执行结果，过程信息
+7. 循环跳转到步骤2
 
 
+这样的终端被定义为标准的输入输出设备。用于输入的屏幕和输出打印的屏幕是同一个。也就是说终端是对字符显示的一个抽象。字符显示中，单个字符是最小的单元，而不是像素。屏幕被划分成固定数量不同颜色的字符。我们可以在现有的屏幕代码基础上，先存储字符和对于的颜色，然后在用方法 DrawCharacter 把其推送到屏幕上。一旦我们需要字符显示，就只需要在屏幕上画出一行字符串。
 
-One defining feature of such terminals is that they are unified for both input and output. The same screen is used to enter inputs as is used to print outputs. This means it is useful to build an abstraction of a character based display. In a character based display, the smallest unit is a character, not a pixel. The screen is divided into a fixed number of characters which have varying colours. We can build this on top of our existing screen code, by storing the characters and their colours, and then using the DrawCharacter method to push them to the screen. Once we have a character based display, drawing text becomes a matter of drawing a line of characters.
-
-In a new file called terminal.s copy the following code:
+新建文件名为 terminal.s 如下：
 ```
 .section .data
 .align 4
@@ -58,66 +57,64 @@ terminalScreen:
 .byte 0x0
 .endr
 ```
-This sets up the data we need for the text terminal. We have two main storages: terminalBuffer and terminalScreen. terminalBuffer is storage for all of the text we have displayed. It stores up to 128 lines of text (each containing 128 characters). Each character consists of an ASCII character code and a colour, all of which are initially set to 0x7f (ASCII delete) and 0 (black on a black background). terminalScreen stores the characters that are currently displayed on the screen. It is 128 by 48 characters, similarly initialised. You may think that we only need this terminalScreen, not the terminalBuffer, but storing the buffer has 2 main advantages:
+这是文件终端的配置数据文件。我们有两个主要的存储变量：terminalBuffer 和 terminalScreen。terminalBuffer保存所有需要显示的字符。它保持128行字符文本（1行包含128个字符）。每个字符有一个 ASCII 字符和颜色单元组成，初始值为0x7f（ASCII的删除键）和 0（前景色和背景色为黑）。terminalScreen保持当前屏幕显示的字符。它保存128x48的字符，与terminalBuffer初始化值一样。你可能会想我仅需要terminalScreen就够了，为什么还要terminalBuffer，其实有两个好处：
 
-  1. We can easily see which characters are different, so we only have to draw those.
-  2. We can 'scroll' back through the terminal's history because it is stored (to a limit).
+  1. 我们可以很容易看到字符串的变化，只需画出有变化的字符。
+  2. 我们可以回滚终端显示的历史字符，也就是缓冲的字符（有限制）
 
 
+你总是需要尝试去设计一个高效的系统，如果很少变化的条件这个系统会运行的会更快。
 
-You should always try to design systems that do the minimum amount of work, as they run much faster for things which don't often change.
+独特的技巧在低功耗系统里很常见。画屏是很耗时的操作，因此我们仅在不得已的时候才去执行这个操作。在这个系统里，我们可以任意改变terminalBuffer，然后调用一个仅拷贝屏幕上字节变化的方法。也就是说我们不需要持续画出每个字符，这样可以节省一大段跨行文本的操作时间。
 
-The differing trick is really common on low power Operating Systems. Drawing the screen is a slow operation, and so we only want to draw thing that we absolutely have to. In this system, we can freely alter the terminalBuffer, and then call a method which copies the bits that change to the screen. This means we don't have to draw each character as we go along, which may save time in the long run on very long sections of text that span many lines.
-
-The other values in the .data section are as follows:
+其他在 .data 段的值得含义如下：
 
   * terminalStart
-    The first character which has been written in terminalBuffer.
+    写入到 terminalBuffer 的第一个字符
   * terminalStop
-    The last character which has been written in terminalBuffer.
+    写入到 terminalBuffer 的最后一个字符
   * terminalView
-    The first character on the screen at present. We can use this to scroll the screen.
+    表示当前屏幕的第一个字符，这样我们可以控制滚动屏幕
   * temrinalColour
-    The colour to draw new characters with.
-
+    即将被描画的字符颜色
 
 
 ```
-Circular buffers are an example of an **data structure**. These are just ideas we have for organising data, that we sometimes implement in software.
+循环缓冲区是**数据结构**一个例子。这是一个组织数据的思路，有时我们通过软件实现这种思路。
 ```
 
-![Diagram showing hellow world being inserted into a circular buffer of size 5.][2] 
-The reason why terminalStart needs to be stored is because termainlBuffer should be a circular buffer. This means that when the buffer is completely full, the end 'wraps' round to the start, and so the character after the very last one is the first one. Thus, we need to advance terminalStart so we know that we've done this. When wokring with the buffer this can easily be implemented by checking if the index goes beyond the end of the buffer, and setting it back to the beginning if it does. Circular buffers are a common and clever way of storing a lot of data, where only the most recent data is important. It allows us to keep writing indefinitely, while always being sure there is a certain amount of recent data available. They're often used in signal processing or compression algorithms. In this case, it allows us to store a 128 line history of the terminal, without any penalties for writing over 128 lines. If we didn't have this, we would have to copy 127 lines back a line very time we went beyond the 128th line, wasting valuable time.
+![显示 Hellow world 插入到大小为5的循环缓冲区的示意图。][2] 
+terminalStart 需要保存起来的原因是 termainlBuffer 是一个循环缓冲区。意思是当缓冲区变满时，末尾地方会回滚覆盖开始位置，这样最后一个字符变成了第一个字符。因此我们需要将 terminalStart 往前推进，这样我们知道我们已经占满它了。如何实现缓冲区检测：如果索引越界到缓冲区的末尾，就将索引指向缓冲区的开始位置。循环缓冲区是一个比较常见的高明的存储大量数据的方法，往往这些数据的最近部分比较重要。它允许无限制的写入，只保证最近一些特定数据有效。这个常常用于信号处理和数据压缩算法。这样的情况，可以允许我们存储128行终端记录，超过128行也不会有问题。如果不是这样，当超过第128行时，我们需要把127行分别向前拷贝一次，这样很浪费时间。
 
-I've mentioned the terminalColour here a few times. You can implement this however you, wish, however there is something of a standard on text terminals to have only 16 colours for foreground, and 16 colours for background (meaning there are 162 = 256 combinations). The colours on a CGA terminal are defined as follows:
+之前已经提到过 terminalColour 几次了。你可以根据你的想法实现终端颜色，但这个文本终端有16个前景色和16个背景色（这里相当于有16²=256种组合）。[CGA][3]终端的颜色定义如下：
 
-Table 1.1 - CGA Colour Codes 
-| Number | Colour (R, G, B)        |
+表格 1.1 - CGA 颜色编码
+
+| 序号 | 颜色 (R, G, B)        |
 | ------ | ------------------------|
-| 0      | Black (0, 0, 0)         |
-| 1      | Blue (0, 0, ⅔)          |
-| 2      | Green (0, ⅔, 0)         |
-| 3      | Cyan (0, ⅔, ⅔)          |
-| 4      | Red (⅔, 0, 0)           |
-| 5      | Magenta (⅔, 0, ⅔)       |
-| 6      | Brown (⅔, ⅓, 0)         |
-| 7      | Light Grey (⅔, ⅔, ⅔)    |
-| 8      | Grey (⅓, ⅓, ⅓)          |
-| 9      | Light Blue (⅓, ⅓, 1)    |
-| 10     | Light Green (⅓, 1, ⅓)   |
-| 11     | Light Cyan (⅓, 1, 1)    |
-| 12     | Light Red (1, ⅓, ⅓)     |
-| 13     | Light Magenta (1, ⅓, 1) |
-| 14     | Yellow (1, 1, ⅓)        |
-| 15     | White (1, 1, 1)         |
+| 0      | 黑 (0, 0, 0)         |
+| 1      | 蓝 (0, 0, ⅔)          |
+| 2      | 绿 (0, ⅔, 0)         |
+| 3      | 青色 (0, ⅔, ⅔)          |
+| 4      | 红色 (⅔, 0, 0)           |
+| 5      | 品红 (⅔, 0, ⅔)       |
+| 6      | 棕色 (⅔, ⅓, 0)         |
+| 7      | 浅灰色 (⅔, ⅔, ⅔)    |
+| 8      | 灰色 (⅓, ⅓, ⅓)          |
+| 9      | 淡蓝色 (⅓, ⅓, 1)    |
+| 10     | 淡绿色 (⅓, 1, ⅓)   |
+| 11     | 淡青色 (⅓, 1, 1)    |
+| 12     | 淡红色 (1, ⅓, ⅓)     |
+| 13     | 浅品红 (1, ⅓, 1) |
+| 14     | 黄色 (1, 1, ⅓)        |
+| 15     | 白色 (1, 1, 1)         |
 
 ```
-Brown was used as the alternative (dark yellow) was unappealing and not useful.
+棕色作为替代色（黑黄色）既不吸引人也没有什么用处。
 ```
+我们将前景色保存到颜色的低字节，背景色保存到颜色高字节。除过棕色，其他这些颜色遵循一种模式如二进制的高位比特代表增加 ⅓ 到每个组件，其他比特代表增加⅔到各自组件。这样很容易进行RGB颜色转换。
 
-We store the colour of each character by storing the fore colour in the low nibble of the colour byte, and the background colour in the high nibble. Apart from brown, all of these colours follow a pattern such that in binary, the top bit represents adding ⅓ to each component, and the other bits represent adding ⅔ to individual components. This makes it easy to convert to RGB colour values.
-
-We need a method, TerminalColour, to read these 4 bit colour codes, and then call SetForeColour with the 16 bit equivalent. Try to implement this on your own. If you get stuck, or have not completed the Screen series, my implementation is given below:
+我们需要一个方法从TerminalColour读取颜色编码的四个比特，然后用16比特等效参数调用 SetForeColour。尝试实现你自己实现。如果你感觉麻烦或者还没有完成屏幕系列课程，我们的实现如下：
 
 ```
 .section .text
@@ -138,33 +135,33 @@ addne r1,#0xA800
 mov r0,r1
 b SetForeColour
 ```
-### 2 Showing the Text
+### 2 文本显示
 
-The first method we really need for our terminal is TerminalDisplay, one that copies the current data from terminalBuffer to terminalScreen and the actual screen. As mentioned, this method should do a minimal amount of work, because we need to be able to call it often. It should compare the text in terminalBuffer with that in terminalDisplay, and copy it across if they're different. Remember, terminalBuffer is a circular buffer running, in this case, from terminalView to terminalStop or 128*48 characters, whichever comes sooner. If we hit terminalStop, we'll assume all characters after that point are 7f16 (ASCII delete), and have colour 0 (black on a black background).
+我们的终端第一个真正需要的方法是TerminalDisplay，它用来把当前的数据从terminalBuffer拷贝到terminalScreen和实际的屏幕。如上所述，这个方法必须是最小开销的操作，因为我们需要频繁调用它。它主要比较 terminalBuffer 与 terminalDisplay的文本，然后只拷贝有差异的字节。请记住 terminalBuffer 是循环缓冲区运行的，这种情况，从 terminalView 到 terminalStop 或者 128*48 字符集，哪个来的最快。如果我们遇到 terminalStop，我们将会假定在这之后的所有字符是7f16 (ASCII delete)，背景色为0（黑色前景色和背景色）。
 
-Let's look at what we have to do:
+让我们看看必须要做的事情：
 
-  1. Load in terminalView, terminalStop and the address of terminalDisplay.
-  2. For each row:
-    1. For each column:
-      1. If view is not equal to stop, load the current character and colour from view
-      2. Otherwise load the character as 0x7f and the colour as 0
-      3. Load the current character from terminalDisplay
-      4. If the character and colour are equal, go to 10
-      5. Store the character and colour to terminalDisplay
-      6. Call TerminalColour with the background colour in r0
-      7. Call DrawCharacter with r0 = 0x7f (ASCII delete, a block), r1 = x, r2 = y
-      8. Call TerminalColour with the foreground colour in r0
-      9. Call DrawCharacter with r0 = character, r1 = x, r2 = y
-      10. Increment the position in terminalDisplay by 2
-      11. If view and stop are not equal, increment the view position by 2
-      12. If the view position is at the end of textBuffer, set it to the start
-      13. Increment the x co-ordinate by 8
-    2. Increment the y co-ordinate by 16
-
+  1. 加载 terminalView ，terminalStop 和 terminalDisplay 的地址。
+  2. 执行每一行：
+    1. 执行每一列：
+      1. 如果 terminalView 不等于 terminalStop，根据 terminalView 加载当前字符和颜色
+      2. 否则加载 0x7f 和颜色 0
+      3. 从 terminalDisplay 加载当前的字符
+      4. 如果字符和颜色相同，直接跳转到10
+      5. 存储字符和颜色到 terminalDisplay
+      6. 用 r0 作为背景色参数调用 TerminalColour
+      7. 用 r0 = 0x7f (ASCII 删除键, 一大块), r1 = x, r2 = y 调用 DrawCharacter
+      8. 用 r0 作为前景色参数调用 TerminalColour
+      9. 用 r0 = 字符, r1 = x, r2 = y 调用 DrawCharacter
+      10. 对位置参数 terminalDisplay 累加2
+      11. 如果 terminalView 不等于 terminalStop不能相等 terminalView 位置参数累加2
+      12. 如果 terminalView 位置已经是文件缓冲器的末尾，将他设置为缓冲区的开始位置
+      13. x 坐标增加8
+    2. y 坐标增加16
 
 
 Try to implement this yourself. If you get stuck, my solution is given below:
+尝试去自己实现吧。如果你遇到问题，我们的方案下面给出来了：
 
 1. 
 ```
@@ -188,53 +185,53 @@ add taddr,#128*128*2
 mov screen,taddr
 ```
 
-I go a little wild with variables here. I'm using taddr to store the location of the end of the textBuffer for ease.
+我这里的变量有点乱。为了方便起见，我用 taddr 存储 textBuffer 的末尾位置。
 
 2. 
 ```
 mov y,#0
 yLoop$:
 ```
-Start off the y loop.
+从yLoop开始运行。
 
     1. 
     ```
     mov x,#0
     xLoop$:
     ```
-    Start off the x loop.
+    从yLoop开始运行。
 
       1. 
       ```
       teq view,stop
       ldrneh char,[view]
       ```
-      I load both the character and the colour into char simultaneously for ease.
+      为了方便起见，我把字符和颜色同时加载到 char 变量了
 
       2. 
       ```
       moveq char,#0x7f
       ```
-      This line complements the one above by acting as though a black delete character was read.
-
+      这行是对上面一行的补充说明：读取黑色的Delete键
+      
       3. 
       ```
       ldrh col,[screen]
       ```
-      For simplicity I load both the character and colour into col simultaneously.
+      为了简便我把字符和颜色同时加载到 col 里。
 
       4. 
       ```
       teq col,char
       beq xLoopContinue$
       ```
-      Now we can check if anything has changed with a teq.
+      现在我用teq指令检查是否有数据变化
 
       5. 
       ```
       strh char,[screen]
       ```
-      We can also easily save the current value.
+      我可以容易的保存当前值
 
       6. 
       ```
@@ -243,7 +240,7 @@ Start off the y loop.
       lsr r0,col,#4
       bl TerminalColour
       ```
-      I split up char into the colour in col and the character in char with a bitshift and an and, then use a bitshift to get the background colour to call TerminalColour.
+      我用 bitshift（比特偏移） 指令和 and 指令从 char 变量中分离出颜色到 col 变量和字符到 char变量，然后再用bitshift（比特偏移）指令后调用TerminalColour 获取背景色。
 
       7. 
       ```
@@ -252,14 +249,14 @@ Start off the y loop.
       mov r2,y
       bl DrawCharacter
       ```
-      Write out a delete character which is a coloured block.
+      写入一个彩色的删除字符块
 
       8. 
       ```
       and r0,col,#0xf
       bl TerminalColour
       ```
-      Use an and to get the low nibble of col then call TerminalColour.
+      用 and 指令获取 col 变量的最低字节，然后调用TerminalColour
 
       9. 
       ```
@@ -268,28 +265,28 @@ Start off the y loop.
       mov r2,y
       bl DrawCharacter
       ```
-      Write out the character we're supposed to write.
+      写入我们需要的字符
 
       10. 
       ```
       xLoopContinue$:
       add screen,#2
       ```
-      Increment the screen pointer.
+      自增屏幕指针
 
       11. 
       ```
       teq view,stop
       addne view,#2
       ```
-      Increment the view pointer if necessary.
+      如果可能自增view指针
 
       12. 
       ```
       teq view,taddr
       subeq view,#128*128*2
       ```
-      It's easy to check for view going past the end of the buffer because the end of the buffer's address is stored in taddr.
+      很容易检测 view指针是否越界到缓冲区的末尾，因为缓冲区的地址保存在 taddr 变量里
 
       13. 
       ```
@@ -297,7 +294,7 @@ Start off the y loop.
       teq x,#1024
       bne xLoop$
       ```
-      We increment x and then loop back if there are more characters to go.
+      如果还有字符需要显示，我们就需要自增 x 变量然后循环到 xLoop 执行
 
     2. 
     ```
@@ -305,7 +302,7 @@ Start off the y loop.
     teq y,#768
     bne yLoop$
     ```
-    We increment y and then loop back if there are more characters to go.
+    如果还有更多的字符显示我们就需要自增 y 变量，然后循环到 yLoop 执行
 
 ```
 pop {r4,r5,r6,r7,r8,r9,r10,r11,pc}
@@ -318,12 +315,12 @@ pop {r4,r5,r6,r7,r8,r9,r10,r11,pc}
 .unreq view
 .unreq stop
 ```
-Don't forget to clean up at the end!
+不要忘记最后清除变量
 
 
-### 3 Printing Lines
+### 3 行打印
 
-Now we have our TerminalDisplay method, which will automatically display the contents of terminalBuffer to terminalScreen, so theoretically we can draw text. However, we don't actually have any drawing routines that work on a character based display. A quick method that will come in handy first of all is TerminalClear, which completely clears the terminal. This can actually very easily be achieved with no loops. Try to deduce why the following method suffices:
+现在我有了自己 TerminalDisplay方法，它可以自动显示 terminalBuffer 到 terminalScreen，因此理论上我们可以画出文本。但是实际上我们没有任何基于字符显示的实例。 首先快速容易上手的方法便是 TerminalClear， 它可以彻底清除终端。这个方法没有循环很容易实现。可以尝试分析下面的方法应该不难：
 
 ```
 .globl TerminalClear
@@ -336,27 +333,26 @@ str r1,[r0,#terminalView-terminalStart]
 mov pc,lr
 ```
 
-Now we need to make a basic method for character based displays; the Print function. This takes in a string address in r0, and a length in r1, and simply writes it to the current location at the screen. There are a few special characters to be wary of, as well as special behaviour to ensure that terminalView is kept up to date. Let's analyse what it has to do:
+现在我们需要构造一个字符显示的基础方法：打印函数。它将保存在 r0 的字符串和 保存在 r1 字符串长度简易的写到屏幕上。有一些特定字符需要特别的注意，这些特定的操作是确保 terminalView 是最新的。我们来分析一下需要做啥： 
 
-  1. Check if string length is 0, if so return
-  2. Load in terminalStop and terminalView
-  3. Deduce the x-coordinate of terminalStop
-  4. For each character:
-    1. Check if the character is a new line
-    2. If so, increment bufferStop to the end of the line storing a black on black delete character.
-    3. Otherwise, copy the character in the current terminalColour
-    4. Check if we're at the end of a line
-    5. If so, check if the number of characters between terminalView and terminalStop is more than one screen
-    6. If so, increment terminalView by one line
-    7. Check if terminalView is at the end of the buffer, replace it with the start if so
-    8. Check if terminalStop is at the end of the buffer, replace it with the start if so
-    9. Check if terminalStop equals terminalStart, increment terminalStart by one line if so
-    10. Check if terminalStart is at the end of the buffer, replace it with the start if so
-  5. Store back terminalStop and terminalView.
+  1. 检查字符串的长度是否为0，如果是就直接返回
+  2. 加载 terminalStop 和 terminalView
+  3. 计算出 terminalStop 的 x 坐标
+  4. 对每一个字符的操作：
+    1. 检查字符是否为新起一行
+    2. 如果是的话，自增 bufferStop 到行末，同时写入黑色删除键
+    3. 否则拷贝当前 terminalColour 的字符
+    4. 加成是在行末
+    5. 如果是，检查从 terminalView 到 terminalStop 之间的字符数是否大于一屏
+    6. 如果是，terminalView 自增一行
+    7. 检查 terminalView 是否为缓冲区的末尾，如果是的话将其替换为缓冲区的起始位置
+    8. 检查 terminalStop 是否为缓冲区的末尾，如果是的话将其替换为缓冲区的起始位置
+    9. 检查 terminalStop 是否等于 terminalStart， 如果是的话 terminalStart 自增一行。
+    10. 检查 terminalStart 是否为缓冲区的末尾，如果是的话将其替换为缓冲区的起始位置
+  5. 存取 terminalStop 和 terminalView
 
 
-
-See if you can implement this yourself. My solution is provided below:
+试一下自己去实现。我们的方案提供如下：
 
 1. 
 ```
@@ -365,7 +361,7 @@ Print:
 teq r1,#0
 moveq pc,lr
 ```
-This quick check at the beginning makes a call to Print with a string of length 0 almost instant.
+这个是打印函数开始快速检查字符串为0的代码
 
 2. 
 ```
@@ -389,14 +385,15 @@ ldr bufferStart,[taddr]
 add taddr,#terminalBuffer-terminalStart
 add taddr,#128*128*2
 ```
-I do a lot of setup here. bufferStart contains terminalStart, bufferStop contains terminalStop, view contains terminalView, taddr is the address of the end of terminalBuffer.
+
+这里我做了很多配置。 bufferStart 代表 terminalStart， bufferStop代表terminalStop， view 代表 terminalView，taddr 代表 terminalBuffer 的末尾地址。
 
 3. 
 ```
 and x,bufferStop,#0xfe
 lsr x,#1
 ```
-As per usual, a sneaky alignment trick makes everything easier. Because of the aligment of terminalBuffer, the x-coordinate of any character address is simply the last 8 bits divided by 2.
+和通常一样，巧妙的对齐技巧让许多事情更容易。由于需要对齐 terminalBuffer，每个字符的 x 坐标需要8位要除以2。
 
   4.
     1. 
@@ -407,7 +404,7 @@ As per usual, a sneaky alignment trick makes everything easier. Because of the a
     teq char,#'\n'
     bne charNormal$
     ```
-    We need to check for new lines.
+    我们需要检查新行
 
     2. 
     ```
@@ -420,7 +417,7 @@ As per usual, a sneaky alignment trick makes everything easier. Because of the a
     
     b charLoopContinue$
     ```
-    Loop until the end of the line, writing out 0x7f; a delete character in black on a black background.
+    循环执行值到行末写入 0x7f；黑色删除键
 
     3. 
     ```
@@ -432,7 +429,7 @@ As per usual, a sneaky alignment trick makes everything easier. Because of the a
     add bufferStop,#2
     add x,#1
     ```
-    Store the current character in the string and the terminalColour to the end of the terminalBuffer and then increment it and x.
+    存储字符串的当前字符和 terminalBuffer 末尾的 terminalColour然后将它和 x 变量自增
 
     4. 
     ```
@@ -440,7 +437,7 @@ As per usual, a sneaky alignment trick makes everything easier. Because of the a
     cmp x,#128
     blt noScroll$
     ```
-    Check if x is at the end of a line; 128.
+    检查 x 是否为行末；128
 
     5. 
     ```
@@ -449,20 +446,20 @@ As per usual, a sneaky alignment trick makes everything easier. Because of the a
     addlt r0,#128*128*2
     cmp r0,#128*(768/16)*2
     ```
-    Set x back to 0 and check if we're currently showing more than one screen. Remember, we're using a circular buffer, so if the difference between bufferStop and view is negative, we're actually wrapping around the buffer.
+    这是 x 为 0 然后检查我们是否已经显示超过1屏。请记住，我们是用的循环缓冲区，因此如果 bufferStop 和 view 之前差是负值，我们实际使用是环绕缓冲区。
 
     6. 
     ```
     addge view,#128*2
     ```
-    Add one lines worth of bytes to the view address.
+    增加一行字节到 view 的地址
 
     7. 
     ```
     teq view,taddr
     subeq view,taddr,#128*128*2
     ```
-    If the view address is at the end of the buffer we subtract the buffer length from it to move it back to the start. I set taddr to the address of the end of the buffer at the beginning.
+    如果 view 地址是缓冲区的末尾，我们就从它上面减去缓冲区的长度，让其指向开始位置。我会在开始的时候设置 taddr 为缓冲区的末尾地址。
 
     8. 
     ```
@@ -470,28 +467,28 @@ As per usual, a sneaky alignment trick makes everything easier. Because of the a
     teq bufferStop,taddr
     subeq bufferStop,taddr,#128*128*2
     ```
-    If the stop address is at the end of the buffer we subtract the buffer length from it to move it back to the start. I set taddr to the address of the end of the buffer at the beginning.
+    如果 stop 的地址在缓冲区末尾，我们就从它上面减去缓冲区的长度，让其指向开始位置。我会在开始的时候设置 taddr 为缓冲区的末尾地址。
 
     9. 
     ```
     teq bufferStop,bufferStart
     addeq bufferStart,#128*2
     ```
-    Check if bufferStop equals bufferStart. If so, add one line to bufferStart.
+    检查 bufferStop 是否等于 bufferStart。 如果等于增加一行到 bufferStart。
 
     10. 
     ```
     teq bufferStart,taddr
     subeq bufferStart,taddr,#128*128*2
     ```
-    If the start address is at the end of the buffer we subtract the buffer length from it to move it back to the start. I set taddr to the address of the end of the buffer at the beginning.
+    如果 start 的地址在缓冲区的末尾，我们就从它上面减去缓冲区的长度，让其指向开始位置。我会在开始的时候设置 taddr 为缓冲区的末尾地址。
 
 ```
 subs length,#1
 add string,#1
 bgt charLoop$
 ```
-Loop until the string is done.
+循环执行知道字符串结束
 
 5. 
 ```
@@ -512,44 +509,45 @@ pop {r4,r5,r6,r7,r8,r9,r10,r11,pc}
 .unreq bufferStop
 .unreq view
 ```
-Store back the variables and return.
+保存变量然后返回
 
 
-This method allows us to print arbitrary text to the screen. Throughout, I've been using the colour variable, but no where have we actually set it. Normally, terminals use special combinations of characters to change the colour. For example ASCII Escape (1b16) followed by a number 0 to f in hexadecimal could set the foreground colour to that CGA colour number. You can try implementing this yourself; my version is in the further examples section on the download page.
+这个方法允许我们打印任意字符到屏幕。然而我们用了颜色变量，但实际上没有设置它。一般终端用特性的组合字符去行修改颜色。如ASCII转移（1b16）后面跟着一个0-f的16进制的书，就可以设置前景色为 CGA颜色。如果你自己想尝试实现；在下载页面有一个我的详细的例子。
 
-### 4 Standard Input
+
+### 4 标志输入
 
 ```
-By convention, in many programming languages, every program has access to stdin and stdout, which are an input and and output stream linked to the terminal. This is still true on graphical programs, though many don't use it.
+按照惯例，许多编程语言中，任意程序可以访问 stdin 和 stdin，他们可以连接到终端的输入和输出流。在图形程序其实也可以进行同样操作，但实际几乎不用。
 ```
 
-Now we have an output terminal that in theory can print out text and display it. That is only half the story however, we want input. We want to implement a method, ReadLine, which stores the next line of text a user types to a location given in r0, up to a maximum length given in r1, and returns the length of the string read in r0. The tricky thing is, the user annoyingly wants to see what they're typing as they type it, they want to use backspace to delete mistakes and they want to use return to submit commands. They probably even want a flashing underscore character to indicate the computer would like input! These perfectly reasonable requests make this method a real challenge. One way to achieve all of this is to store the text they type in memory somewhere along with its length, and then after every character, move the terminalStop address back to where it started when ReadLine was called and calling Print. This means we only have to be able to manipulate a string in memory, and then make use of our Print function.
+现在我们有一个可以打印和显示文本的输出终端。这仅仅是说了一半，我们需要输入。我们想实现一个方法：Readline，可以保存文件的一行文本，文本位置有 r0 给出，最大的长度由 r1 给出，返回 r0 里面的字符串长度。棘手的是用户输出字符的时候要回显功能，同时想要退格键的删除功能和命令回车执行功能。他们还想需要一个闪烁的下划线代表计算机需要输入。这些完全合理的要求让构造这个方法更具有挑战性。有一个方法完成这些需求就是存储用户输入的文本和文件大小到内存的某个地方。然后当调用 ReadLine 的时候，移动 terminalStop 的地址到它开始的地方然后调用 Print。也就是说我们只需要确保在内存维护一个字符串，然后构造一个我们自己的打印函数。
 
-Lets have a look at what ReadLine will do:
+让我们看看 ReadLine做了哪些事情：
 
-  1. If the maximum length is 0, return 0
-  2. Retrieve the current values of terminalStop and terminalView
-  3. If the maximum length is bigger than half the buffer size, set it to half the buffer size
-  4. Subtract one from maximum length to ensure it can store our flashing underscore or a null terminator
-  5. Write an underscore to the string
-  6. Write the stored terminalView and terminalStop addresses back to the memory
-  7. Call Print on the current string
-  8. Call TerminalDisplay
-  9. Call KeyboardUpdate
-  10. Call KeyboardGetChar
-  11. If it is a new line character go to 16
-  12. If it is a backspace character, subtract 1 from the length of the string (if it is > 0)
-  13. If it is an ordinary character, write it to the string (if the length < maximum length)
-  14. If the string ends in an underscore, write a space, otherwise write an underscore
-  15. Go to 6
-  16. Write a new line character to the end of the string
-  17. Call Print and TerminalDisplay
-  18. Replace the new line with a null terminator
-  19. Return the length of the string
+  1. 如果字符串可保存的最大长度为0，直接返回
+  2. 检索 terminalStop 和 terminalStop 的当前值
+  3. 如果字符串的最大长度大约缓冲区的一半，就设置大小为缓冲区的一半
+  4. 从最大长度里面减去1来确保输入的闪烁字符或结束符
+  5. 向字符串写入一个下划线
+  6. 写入一个 terminalView 和 terminalStop 的地址到内存
+  7. 调用 Print 大约当前字符串
+  8. 调用 TerminalDisplay
+  9. 调用 KeyboardUpdate
+  10. 调用 KeyboardGetChar
+  11. 如果为一个新行直接跳转到16
+  12. 如果是一个退格键，将字符串长度减一（如果其大约0）
+  13. 如果是一个普通字符，将他写入字符串（字符串大小确保小于最大值）
+  14. 如果字符串是以下划线结束，写入一个空格，否则写入下划线
+  15. 跳转到6
+  16. 字符串的末尾写入一个新行
+  17. 调用 Print 和 TerminalDisplay
+  18. 用结束符替换新行
+  19. 返回字符串的长度
 
 
 
-Convince yourself that this will work, and then try to implement it yourself. My implementation is given below:
+为了方便读者理解，然后然后自己去实现，我们的实现提供如下：
 
 1. 
 ```
@@ -559,7 +557,7 @@ teq r1,#0
 moveq r0,#0
 moveq pc,lr
 ```
-Quick special handling for the zero case, which is otherwise difficult.
+快速处理长度为0的情况
 
 2. 
 ```
@@ -579,27 +577,27 @@ ldr input,[taddr,#terminalStop-terminalStart]
 ldr view,[taddr,#terminalView-terminalStart]
 mov length,#0
 ```
-As per the general theme, I do a lot of initialisations early. input contains the value of terminalStop and view contains terminalView. Length starts at 0.
+考虑到常见的场景，我们初期做了很多初始化动作。input 代表 terminalStop 的值，view 代表 terminalView。Length 默认为 0. 
 
 3. 
 ```
 cmp maxLength,#128*64
 movhi maxLength,#128*64
 ```
-We have to check for unusually large reads, as we can't process them beyond the size of the terminalBuffer (I suppose we CAN, but it would be very buggy, as terminalStart could move past the stored terminalStop).
+我们必须检查异常大的读操作，我们不能处理超过 terminalBuffer 大小的输入(理论上可行，但是terminalStart 移动越过存储的terminalStop，会有很多问题)。
 
 4. 
 ```
 sub maxLength,#1
 ```
-Since the user wants a flashing cursor, and we ideally want to put a null terminator on this string, we need 1 spare character.
+由于用户需要一个闪烁的光标，我们需要一个备用字符在理想状况在这个字符串后面放一个结束符。
 
 5. 
 ```
 mov r0,#'_'
 strb r0,[string,length]
 ```
-Write out the underscore to let the user know they can input.
+写入一个下划线让用户知道我们可以输入了。
 
 6. 
 ```
@@ -607,7 +605,7 @@ readLoop$:
 str input,[taddr,#terminalStop-terminalStart]
 str view,[taddr,#terminalView-terminalStart]
 ```
-Save the stored terminalStop and terminalView. This is important to reset the terminal after each call to Print, which changes these variables. Strictly speaking it can change terminalStart too, but this is irreversible.
+保存 terminalStop 和 terminalView。这个对重置一个终端很重要，它会修改这些变量。严格讲也可以修改 terminalStart，但是不可逆。
 
 7. 
 ```
@@ -616,25 +614,24 @@ mov r1,length
 add r1,#1
 bl Print
 ```
-Write the current input. We add 1 to the length for the underscore.
-
+写入当前的输入。由于下划线因此字符串长度加1
 8. 
 ```
 bl TerminalDisplay
 ```
-Copy the new text to the screen.
+拷贝下一个文本到屏幕
 
 9. 
 ```
 bl KeyboardUpdate
 ```
-Fetch the latest keyboard input.
+获取最近一次键盘输入
 
 10. 
 ```
 bl KeyboardGetChar
 ```
-Retrieve the key pressed.
+检索键盘输入键值
 
 11. 
 ```
@@ -646,7 +643,7 @@ teq r0,#'\b'
 bne standard$
 ```
 
-Break out of the loop if we have an enter key. Also skip these conditions if we have a null terminator and process a backspace if we have one.
+如果我们有一个回车键，循环中断。如果有结束符和一个退格键也会同样跳出选好。
 
 12. 
 ```
@@ -655,7 +652,7 @@ cmp length,#0
 subgt length,#1
 b cursor$
 ```
-Remove one from the length to delete a character.
+从 length 里面删除一个字符
 
 13. 
 ```
@@ -665,7 +662,7 @@ bge cursor$
 strb r0,[string,length]
 add length,#1
 ```
-Write out an ordinary character where possible.
+写回一个普通字符
 
 14. 
 ```
@@ -676,21 +673,21 @@ moveq r0,#' '
 movne r0,#'_'
 strb r0,[string,length]
 ```
-Load in the last character, and change it to an underscore if it isn't one, and a space if it is.
+加载最近的一个字符，如果不是下换线则修改为下换线，如果是空格则修改为下划线
 
 15. 
 ```
 b readLoop$
 readLoopBreak$:
 ```
-Loop until the user presses enter.
+循环执行值到用户输入按下
 
 16. 
 ```
 mov r0,#'\n'
 strb r0,[string,length]
 ```
-Store a new line at the end of the string.
+在字符串的结尾处存入一新行
 
 17. 
 ```
@@ -702,14 +699,15 @@ add r1,#1
 bl Print
 bl TerminalDisplay
 ```
-Reset the terminalView and terminalStop and then Print and TerminalDisplay the final input.
+重置 terminalView 和 terminalStop 然后调用 Print 和 TerminalDisplay 输入回显
+
 
 18. 
 ```
 mov r0,#0
 strb r0,[string,length]
 ```
-Write out the null terminator.
+写入一个结束符
 
 19. 
 ```
@@ -722,14 +720,14 @@ pop {r4,r5,r6,r7,r8,r9,pc}
 .unreq length
 .unreq view
 ```
-Return the length.
+返回长度
 
 
 
 
-### 5 The Terminal: Rise of the Machine
+### 5 终端: 机器升级
 
-So, now we can theoretically interact with the user on the terminal. The most obvious thing to do is to put this to the test! In 'main.s' delete everything after bl UsbInitialise and copy in the following code:
+现在我们理论用终端和用户可以交互了。最显而易见的事情就是拿去测试了！在 'main.s' 里UsbInitialise后面的删除代码如下
 
 ```
 reset$:
@@ -886,13 +884,14 @@ commandTable:
 .int commandStringCls, TerminalClear
 .int commandStringEnd, 0
 ```
-This code brings everything together into a simple command line operating system. The commands available are echo, reset, ok and cls. echo copies any text after it back to the terminal, reset resets the operating system if things go wrong, ok has two functions: ok on turns the OK LED on, and ok off turns the OK LED off, and cls clears the terminal using TerminalClear.
+这块代码集成了一个简易的命令行操作系统。支持命令：echo，reset，ok 和 cls。echo 拷贝任意文本到终端，reset命令会在系统出现问题的是复位操作系统，ok 有两个功能：设置 OK 灯亮灭，最后 cls 调用 TerminalClear 清空终端。
 
-Have a go with this code on the Raspberry Pi. If it doesn't work, please see our troubleshooting page.
+试试树莓派的代码吧。如果遇到问题，请参照问题集锦页面吧。
 
-When it works, congratulations you've completed a basic terminal Operating System, and have completed the input series. Unfortunately, this is as far as these tutorials go at the moment, but I hope to make more in the future. Please send feedback to awc32@cam.ac.uk.
+如果运行正常，祝贺你完成了一个操作系统基本终端和输入系列的课程。很遗憾这个教程先讲到这里，但是我希望将来能制作更多教程。有问题请反馈至awc32@cam.ac.uk。
 
-You're now in position to start building some simple terminal Operating Systems. My code above builds up a table of available commands in commandTable. Each entry in the table is an int for the address of the string, and an int for the address of the code to run. The last entry has to be commandStringEnd, 0. Try implementing some of your own commands, using our existing functions, or making new ones. The parameters for the functions to run are r0 is the address of the command the user typed, and r1 is the length. You can use this to pass inputs to your commands. Maybe you could make a calculator program, perhaps a drawing program or a chess program. Whatever ideas you've got, give them a go!
+你已经在建立了一个简易的终端操作系统。我们的代码在 commandTable 构造了一个可用的命令表格。每个表格的入口是一个整型数字，用来表示字符串的地址，和一个整型数字表格代码的执行入口。 最后一个入口是 为 0 的commandStringEnd。尝试实现你自己的命令，可以参照已有的函数，建立一个新的。函数的参数 r0 是用户输入的命令地址，r1是其长度。你可以用这个传递你输入值到你的命令。也许你有一个计算器程序，或许是一个绘图程序或国际象棋。不管你的什么电子，让它跑起来！
+
 
 --------------------------------------------------------------------------------
 
@@ -900,7 +899,7 @@ via: https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/input02.html
 
 作者：[Alex Chadwick][a]
 选题：[lujun9972][b]
-译者：[译者ID](https://github.com/译者ID)
+译者：[译者ID](https://github.com/guevaraya)
 校对：[校对者ID](https://github.com/校对者ID)
 
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
@@ -909,3 +908,4 @@ via: https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/input02.html
 [b]: https://github.com/lujun9972
 [1]: https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/input01.html
 [2]: https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/images/circular_buffer.png
+[3]: https://en.wikipedia.org/wiki/Color_Graphics_Adapter
