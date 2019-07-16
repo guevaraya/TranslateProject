@@ -7,32 +7,34 @@
 [#]: via: (https://itsfoss.com/install-r-ubuntu/)
 [#]: author: (Sergiu https://itsfoss.com/author/sergiu/)
 
-How to Install and Use R on Ubuntu
+如何在Ubuntu上安装和使用R语言
 ======
 
-_**Brief: This tutorial teaches you to install R on Ubuntu. You’ll also learn how to run your first R program in Ubuntu using various methods.**_
+_**简介: 这个教程是指导如何在Ubuntu上安装R语言。同时可以学习到如何在Ubuntu上用不同方法运行简单的R语言程序**_
 
-[R][1], together with Python, is the most commonly used programming language for statistical computing and graphics, making it easy to work with data. With the growing interest in data analysis, data visualization, data science (the machine learning craze), it is now more popular than ever and is a great tool for anyone looking to dive into this fields.
+[R][1] ，和Python一样，他是在统计计算和图形处理上最常用的编程语言，易于处理数据。随着数据分析，数据可视化，数据科学(机器学习热）的火热化，对于想深入这一领域的人来说，它是一个很好的工具。
 
-The good thing about R is that its syntax is pretty straight-forward and you can find many tutorials/guides on how R is used in the real world.
+R语言的优点是他的语法非常简练，你可以结合现实生活找到它的很多教程或指南。
 
-In this article, I’ll cover how to install R on Ubuntu Linux. I’ll also show you how to run your first R program in Linux.
+本文将介绍包含如何在Ubuntu下安装R语言，也会介绍在Linux下如何运行第一个R程序程序。
 
 ![][2]
 
-### Installing R on Ubuntu
+### 如何在Ubuntu上安装R语言
 
-**R** is included in the Ubuntu repositories. It can be easily installed using:
+**R** 默认在Ubuntu的软件库里。用以下命令很容易安装：
 
 ```
 sudo apt install r-base
 ```
 
-Do note that this may install a slightly older version. At the time of writing this article, Ubuntu offers version 3.4 whereas the latest is version 3.6.
+请注意可能会安装一个老版本。在我写这篇文字的时候，Ubuntu已经提供的3.4的，但是最新的是3.6.
 
 _I advise sticking with whichever version Ubuntu provides unless you must use the newer version._
+_我建议如果不是万不得已就直接使用Ubuntu的配套版本。_
 
 In order to get the latest version (or any specific version for that matter), you must use **[CRAN][3]** (The Comprehensive R Archive Network). This is a list of mirrors for downloading the latest version of R. Click on the next section to learn how to install the latest version of R on Ubuntu.
+如果想安装最新的版本（或特殊情况指定版本），你必须用**[CRAN][3]** （Comprehensive R Archive Network）。这个是R最新版本的镜像，点击进入页面学习在Ubuntu安装R语言。
 
 **How to install latest R version 3.6 on Ubuntu (click to expand)**
 
