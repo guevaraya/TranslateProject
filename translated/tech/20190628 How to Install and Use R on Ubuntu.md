@@ -31,7 +31,6 @@ sudo apt install r-base
 请注意可能会安装一个老版本。在我写这篇文字的时候，Ubuntu已经提供的3.4的，但是最新的是3.6.
 
 _我建议如果不是万不得已就直接使用Ubuntu的配套版本。_
-
 如果想安装最新的版本（或特殊情况指定版本），你必须用**[CRAN][3]** （Comprehensive R Archive Network）。这个是R最新版本的镜像，点击进入页面学习如何在Ubuntu上安装R语言。
 
 **如何在Ubuntu上安装最新3.6版本的R环境 (单击展开)**
@@ -125,55 +124,55 @@ Rscript hello.r
 
 ![Rplots.pdf][8]
 
-**小提示**_**Rscript**_默认不会加载_**methods**_包。确保在脚本中显式加载它。
+**小提示: **_**Rscript**_ 默认不会加载_**methods**_包。确保在脚本中显式加载它。
 
 #### 在Ubuntu下用RStudio运行R语言
 
-The most common way to use **R** is using [RStudio][10], a great cross-platform open source IDE. You can [install it using deb file in Ubuntu][11]. Download the deb file from the link below. You’ll have to scroll down a bit to locate the DEB files for Ubuntu.
+最常见的 **R** 环境是[RStudio][10]，一个强大的跨平台开源IDE。你可以用deb文件在Ubuntu上安装它。下载deb文件的链接如下。你需要向下滚动找到Ubuntu下的DEB文件。
 
-[Download RStudio for Ubuntu][12]
+[下载 Ubuntu 的 Rstudio][12]
 
-Once you download the DEB file, just double click on it to install it.
+下载了DEB文件后，直接点击安装。
 
-Once installed, search for it in the menu and start it. The home window of the application should pop up:
+下载后从菜单搜索启动它。程序主界面会弹出如下：
 
-![RStudio Home][13]
+![RStudio 主界面][13]
 
-Here you have a working console, just like the one you got in the terminal with the **R** command.
+现在可以看到和 **R** 命令终端一样的工作台.
 
 [][14]
 
-Suggested read  Setting Up Python Environments In Linux and Unix Systems
+建议阅读 Linux和类Unix系统下的Python 环境的配置
 
-To create a file, in the top bar click on **File** and select **New File &gt; Rscript** (or **CTRL+Shift+n)**:
+创建一个文件：点击顶栏 **File** 然后选择 **New File &gt; Rscript**(或 **CTRL+Shift+n)**:
 
-![RStudio New File][15]
+![RStudio 新建文件][15]
 
-Press **CTRL+s** to save the file and choose a location and a name it:
+按下 **CTRL+s** 保存文件选择路径和命名：
 
-![RStudio Save File][16]
+![RStudio 保存文件[16]
 
-After doing so, click on **Session &gt; Set Working Directory &gt; To Source File Location** to change the working directory to the location of your script:
+这样做了后，点击 **Session &gt; Set Working Directory &gt; To Source File Location** 修改工作目录为你的脚本路径：
 
-![RStudio Working Directory][17]
+![RStudio 工作目录][17]
 
-You are now ready to go! Write in your code and click run. You should be able to see output both in the console and in the plotting window:
+现在一切准备就绪!敲写代码然后点击运行。你可以在控制台和图形窗口看到结果：
 
-![RStudio Run][18]
+![RStudio 运行][18]
 
-**Wrapping Up**
+**结束语**
 
-In this article, I showed you step by step how to get started using the **R** programming language on an Ubuntu system. I covered several ways you can go about this: **R console** – useful for testing, **Rscript** – for the terminal lover, **RStudio** – the IDE for your needs.
+这篇文章，作者展示了如何在Ubuntu下使用**R**语言。包含了一下几个方面：**R 控制台** - 很有用处的常见测试，**Rscript** - 终端达人操作，**RStudio** -你想要的IDE
 
-Whether you are willing to get into data science or simply love statistics, **R** is a good addition to your programming arsenal, being the perfect tool for analyzing data.
+无论你正在从事数据科学或仅仅的热爱数据统计，作为一个数据分析工具，**R** 是一个比较好的编程辅助。
 
-If you are absolutely new to R, let me recommend you this excellent book that will teach you fundamentals of R. It’s available on Amazon Kindle.
+如果你完全是一个新手，我推荐这边书可以教你一些R的基础知识。它在亚马逊Kindle也可以找到。
 
-Preview | Product | Price |
+预览 | 产品 | 价格 |
 ---|---|---|---
-![Learn R in a Day][19] ![Learn R in a Day][19] | [Learn R in a Day][20] |  | [Buy on Amazon][21]
+![一天学会R语言][19] ![一天学会R语言][19] | [一天学会R语言][20] |  | [亚马逊购买][21]
 
-Do you use **R**? Are you just getting into it? Let us know more about how and why you use or want to learn to use **R**!
+你想使用 **R**吗？你入门了吗？让我们一起学习如何自己为什么要用和学习**R**!
 
 --------------------------------------------------------------------------------
 
@@ -181,7 +180,7 @@ via: https://itsfoss.com/install-r-ubuntu/
 
 作者：[Sergiu][a]
 选题：[lujun9972][b]
-译者：[译者ID](https://github.com/译者ID)
+译者：[译者ID](https://github.com/guevara.ya)
 校对：[校对者ID](https://github.com/校对者ID)
 
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
