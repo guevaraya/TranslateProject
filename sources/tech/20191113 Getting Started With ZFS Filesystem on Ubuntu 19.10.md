@@ -1,5 +1,5 @@
 [#]: collector: (lujun9972)
-[#]: translator: ( )
+[#]: translator: (guevaraya )
 [#]: reviewer: ( )
 [#]: publisher: ( )
 [#]: url: ( )
@@ -7,18 +7,19 @@
 [#]: via: (https://itsfoss.com/zfs-ubuntu/)
 [#]: author: (John Paul https://itsfoss.com/author/john/)
 
-Getting Started With ZFS Filesystem on Ubuntu 19.10
+在 Ubuntu 19.10 上学习入门 ZFS 文件系统
 ======
 
-One of the main [features of Ubuntu 19.10][1] is support for [ZFS][2]. Now you can easily install Ubuntu with on ZFS without any extra effort.
+一个主要的 [Ubuntu 19.01][1] 的新特性 就是支持 [ZFS][2]。现在你可以很容易的不要太多操作就可以在Ubuntu 系统上安装 ZFS了。
 
-Normally, you install Linux with Ext4 filesystem. But if you do a fresh install of Ubuntu 19.10, you’ll see the option to use ZFS on the root. You must not use it on a dual boot system though because it will erase the entire disk.
+一般情况下，安装 Linux 是会选择 Ext4 文件系统。但是如果是安装 Ubuntu 19.10，在启动阶段可以看到 ZFS 选项了。你绝对不能在双系统上用它，因为它会擦除这个磁盘。
 
-![You can choose ZFS while installing Ubuntu 19.10][3]
+![你可以在安装 Ubuntu 19.10 的时候选择 ZFS][3]
 
-Let’s see why ZFS matters and how to take advantage of it on ZFS install of Ubuntu.
+让我们看看 ZFS 有多重要以及如何在已经安装 ZFS 的 Ubuntu 上 使用它。
 
 ### How ZFS is different than other filesystems?
+### ZFS 与其他文件系统有哪些区别？
 
 ZFS is designed with two major goals in mind: to handle large amounts of storage and prevent data corruption. ZFS can handle up to 256 quadrillion Zettabytes of storage. (Hence the Z in ZFS.) It can also handle files up to 16 exabytes in size.
 
