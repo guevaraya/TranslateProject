@@ -18,30 +18,29 @@
 
 让我们看看 ZFS 有多重要以及如何在已经安装 ZFS 的 Ubuntu 上 使用它。
 
-### How ZFS is different than other filesystems?
 ### ZFS 与其他文件系统有哪些区别？
 
-ZFS is designed with two major goals in mind: to handle large amounts of storage and prevent data corruption. ZFS can handle up to 256 quadrillion Zettabytes of storage. (Hence the Z in ZFS.) It can also handle files up to 16 exabytes in size.
+ZFS 的设计初衷是：处理海量存储和避免数据损坏。ZFS 可以处理 256 千万亿的泽它字节(ZB)。（因此这就是ZFS的Z。）它可以处理最大16艾字节（EB）的文件。
 
-If you are limited to a single drive laptop, you can still take advantage of the data protection features in ZFS. The copy-on-write feature ensures that data that is in use is not overwritten. Instead, the new information is written to a new block and the filesystem’s metadata is updated to point to the new block. ZFS can easily create snapshots of the filesystem. These snapshots track changes made to the filesystem and share with the filesystem the data that is the same to save space.
+如果你仅有一个单磁盘的笔记本电脑，你可以体验 ZFS 的数据保护特性。即写及时拷贝特性确保正在使用的数据不会被覆盖，相反，新的数据会被写到一个新的块中，同时文件系统的元数据会被更新到新块中。ZFS 可容易的创建文件系统的快照。这个快照可追踪文件系统的更改，并共享数据块确保节省数据空间。
 
-ZFS assigned a checksum to each file on the drive. It is constantly checking the state of the file against that checksum. If it detects that the file has become corrupt, it will attempt to automatically repair that file.
+ZFS 为磁盘上的每个文件分配一个校验和。它会不断的校验文件的状态和校验和。如果发现文件被损坏了，它就会尝试修复文件。
 
-I have written a detailed article about [what is ZFS and what its features are][2]. Please read it if you are interested in knowing more on this topic.
+我写过一个文章详细介绍 [什么是 ZFS以及它有哪些特性[2].如果你感兴趣可以去阅读下。
 
-Note
+注：
 
-Keep in mind that the data protection features of ZFS can lead to a reduction in performance.
+请谨记 ZFS 的数据保护特性会导致性能下降。
 
-### Using ZFS on Ubuntu [For intermediate to advanced users]
+### Ubuntu下使用 ZFS [适用于中高级用户] 
 
 ![][4]
 
-Once you have a clean install of Ubuntu with ZFS on the main disk you can start [taking advantage][5] of the features that this filesystem has.
+一旦你在你的主磁盘上干净安装了 Ubuntu 下的 ZFS，你就可以开始体验它的特性。
 
-Please note that all setup of ZFS requires the command line. I am not aware of any GUI tools for it.
+请注意安装 ZFS 这个过程需要命令行。我还没用过它的 GUI 工具。
 
-#### Creating a ZFS pool
+#### 创建一个 ZFS 池
 
 _**The section only applies if you have a system with more than one drive. If you only have one drive, Ubuntu will automatically create the pool during installation.**_
 
