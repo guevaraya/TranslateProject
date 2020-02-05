@@ -7,11 +7,11 @@
 [#]: via: (https://opensource.com/article/20/2/kubernetes-tmux-kubectl)
 [#]: author: (Abhishek Tamrakar https://opensource.com/users/tamrakar)
 
-Troubleshoot Kubernetes with the power of tmux and kubectl
+解决 Kubernetes 问题的利器 Tmux 和 kubectl
 ======
-A kubectl plugin that uses tmux to make troubleshooting Kubernetes much
-simpler.
-![Woman sitting in front of her laptop][1]
+一个 kubectl 插件 用 tmux 使 Kubernetes 疑难问题变得更简单。
+
+![一个妇女坐在笔记本面前][1]
 
 [Kubernetes][2] is a thriving open source container orchestration platform that offers scalability, high availability, robustness, and resiliency for applications. One of its many features is support for running custom scripts or binaries through its primary client binary, [kubectl][3]. Kubectl is very powerful and allows users to do anything with it that they could do directly on a Kubernetes cluster.
 
