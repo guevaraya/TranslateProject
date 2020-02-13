@@ -11,9 +11,9 @@
 ======
 一个 kubectl 插件 用 tmux 使 Kubernetes 疑难问题变得更简单。
 
-![一个妇女坐在笔记本面前][1]
+![一个坐在笔记本面前的妇女][1]
 
-[Kubernetes][2] is a thriving open source container orchestration platform that offers scalability, high availability, robustness, and resiliency for applications. One of its many features is support for running custom scripts or binaries through its primary client binary, [kubectl][3]. Kubectl is very powerful and allows users to do anything with it that they could do directly on a Kubernetes cluster.
+[Kubernetes][2] 是一个活跃的开源容器管理平台，它提供了可扩展性，高可用性，健壮性和富有弹性的应用程序管理。它的众多特性之一是支持通过原生的客户端程序[kubectl][3] 运行定制脚本或可执行程序，Kubectl 是很强大的，允许用户在 Kubernetes 集群上用它直接做很多事情。
 
 ### Troubleshooting Kubernetes with aliases
 
