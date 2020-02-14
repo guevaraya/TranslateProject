@@ -15,26 +15,24 @@
 
 [Kubernetes][2] 是一个活跃的开源容器管理平台，它提供了可扩展性，高可用性，健壮性和富有弹性的应用程序管理。它的众多特性之一是支持通过原生的客户端程序  [kubectl][3] 运行定制脚本或可执行程序，Kubectl 是很强大的，允许用户在 Kubernetes 集群上用它直接做很多事情。
 
-### Troubleshooting Kubernetes with aliases
+### 使用别名进行 Kubernetes 的故障排查
 
-Anyone who uses Kubernetes for container orchestration is aware of its features—as well as the complexity it brings because of its design. For example, there is an urgent need to simplify troubleshooting in Kubernetes with something that is quicker and has little need for manual intervention (except in critical situations).
+使用 Kubernetes 的容器管理的人都知道由于设计上原因带来了其复杂性。例如，迫切的可快速的以及几乎不需要人工干预方式简化故障排查（除过特殊情况）。
 
-There are many scenarios to consider when it comes to troubleshooting functionality. In one scenario, you know what you need to run, but the command's syntax—even when it can run as a single command—is excessively complex, or it may need one or two inputs to work.
+在故障排查功能方面，这有很多场景需要考虑。有一个场景，你知道你需要运行什么，但是这个命令的语法（即使作为一个单独的命令运行）过于复杂，或需要一、两次交互才能起作用。
 
-For example, if you frequently need to jump into a running container in the System namespace, you may find yourself repeatedly writing:
-
+例如，如果你频繁的需要调整到一个系统命名里正在运行的容器，你可能发现自己在重复的写入：
 
 ```
 `kubectl --namespace=kube-system exec -i -t <your-pod-name>`
 ```
-
-To simplify troubleshooting, you could use command-line aliases of these commands. For example, you could add the following to your dotfiles (.bashrc or .zshrc):
-
+为了简化故障排查，你可以用这些指令的命令行补全功能。比如，你可以增加下面命令到你的隐藏配置文件（.bashrc 或 .zshrc）：
 
 ```
 `alias ksysex='kubectl --namespace=kube-system exec -i -t'`
 ```
 
+这是来自于常见的 [Kubernetes 别名仓][4]的一个例子，它展示了一个 kubectl 简化的功能的方法。像这个场景的简化情况，使用别名很有用。
 This is one of many examples from a [repository of common Kubernetes aliases][4] that shows one way to simplify functions in kubectl. For something simple like this scenario, an alias is sufficient.
 
 ### Switching to a kubectl plugin
