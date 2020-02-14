@@ -157,7 +157,7 @@ via: https://opensource.com/article/20/2/kubernetes-tmux-kubectl
 
 [a]: https://opensource.com/users/tamrakar
 [b]: https://github.com/lujun9972
-[1]: https://opensource.com/sites/default/files/styles/image-full-size/public/lead-images/OSDC_women_computing_4.png?itok=VGZO8CxT (Woman sitting in front of her laptop)
+[1]: https://opensource.com/sites/default/files/styles/image-full-size/public/lead-images/OSDC_women_computing_4.png?itok=VGZO8CxT (一个坐在笔记本面前的妇女)
 [2]: https://opensource.com/resources/what-is-kubernetes
 [3]: https://kubernetes.io/docs/reference/kubectl/overview/
 [4]: https://github.com/ahmetb/kubectl-aliases/blob/master/.kubectl_aliases
