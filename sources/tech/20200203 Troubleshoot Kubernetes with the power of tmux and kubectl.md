@@ -33,29 +33,25 @@
 ```
 
 这是来自于常见的 [Kubernetes 别名仓][4]的一个例子，它展示了一个 kubectl 简化的功能的方法。像这个场景的简化情况，使用别名很有用。
-This is one of many examples from a [repository of common Kubernetes aliases][4] that shows one way to simplify functions in kubectl. For something simple like this scenario, an alias is sufficient.
 
-### Switching to a kubectl plugin
+### 切换到 kubectl 插件
 
-A more complex troubleshooting scenario involves the need to run many commands, one after the other, to investigate an environment and come to a conclusion. Aliases alone are not sufficient for this use
+更复杂的故障排查场景是需要执行很多命令，一个一个的执行，然后去调查环境，最后得出结论。单用别名方法是不能解决这种情况的；你需要知道你所部署的Kubernetes 之间逻辑和和相关性，你真是需要的是自动化来短时间输出你想要的。
 
-case; you need repeatable logic and correlations between the many parts of your Kubernetes deployment. What you really need is automation to deliver the desired output in less time.
+考虑到你的集群有10到20或50到100个命名空间来提供不同的微服务。在这个常见下进行故障排查，有什么对你有帮助？
 
-Consider 10 to 20—or even 50 to 100—namespaces holding different microservices on your cluster. What would be helpful for you to start troubleshooting this scenario?
-
-  * You would need something that can quickly tell which pod in which namespace is throwing errors.
-  * You would need something that can watch logs of all the pods in a namespace.
-  * You might also need to watch logs of certain pods in a specific namespace that have shown errors.
+  * 你需要某个东西可快速的告知哪个 Pod 哪个 命名空间抛的错误。
+  * 你需要牧歌东西可监视一个命名空间的所有 pod 的日志。
+  * 你可能也需要监视出现错误的指定命名空间的特定的 pod 的日志。
 
 
+只要包含以上这些点的任何的解决方案将对定位产品问题很大的帮助，包含对开发和测试周期过程。
 
-Any solution that covers these points would be very useful in investigating production issues as well as during development and testing cycles.
+你可以用 [kubectl 插件][5] 创建比简易别名更强大的东西。插件类似于其他用任何语言编写的独立脚本，但被设计为 Kubernetes 管理员的主要命令扩展。
 
-To create something more powerful than a simple alias, you can use [kubectl plugins][5]. Plugins are like standalone scripts written in any scripting language but are designed to extend the functionality of your main command when serving as a Kubernetes admin.
+创建一个插件，你必须用正确的语法 **kubectl-&lt;your-plugin-name&gt;** 来拷贝这个脚本到导出目录 **$PATH** ，需要赋予可执行权限（**chmod +x**）。
 
-To create a plugin, you must use the proper syntax of **kubectl-&lt;your-plugin-name&gt;** to copy the script to one of the exported pathways in your **$PATH** and give it executable permissions (**chmod +x**).
-
-After creating a plugin and moving it into your path, you can run it immediately. For example, I have kubectl-krawl and kubectl-kmux in my path:
+创建插件之后把他移动到你的目录，你需要立即运行。例如，你的目录下有一个 kubectl-krawl 和 kubectl-kmux:
 
 
 ```
@@ -67,10 +63,9 @@ The following compatible plugins are available:
 
 $ kubectl kmux
 ```
+现在让我们见识下带有 tmux 的 Kubernetes 的有多强大。
 
-Now let's explore what this looks like when you power Kubernetes with tmux.
-
-### Harnessing the power of tmux
+### 驾驭强大的 tmux
 
 [Tmux][6] is a very powerful tool that many sysadmins and ops teams rely on to troubleshoot issues related to ease of operability—from splitting windows into panes for running parallel debugging on multiple machines to monitoring logs. One of its major advantages is that it can be used on the command line or in automation scripts.
 
