@@ -67,10 +67,9 @@ $ kubectl kmux
 
 ### 驾驭强大的 tmux
 
-[Tmux][6] is a very powerful tool that many sysadmins and ops teams rely on to troubleshoot issues related to ease of operability—from splitting windows into panes for running parallel debugging on multiple machines to monitoring logs. One of its major advantages is that it can be used on the command line or in automation scripts.
+[Tmux][6] 是一个非常强大的工具，许多管理员和操作团队通过它来返回问题故障，通过易于分屏的方式到窗口上并行调试多个机器以及管理日志。他的一个主要的优点是可基于命令行或自动化的脚本。
 
-I created [a kubectl plugin][7] that uses tmux to make troubleshooting much simpler. I will use annotations to walk through the logic behind the plugin (and leave it for you to go through the plugin's full code):
-
+我创建[一个 kubectl 插件][7] 用 tmux 使故障排查更加简单。我将通过注释来了解插件背后的逻辑（我们来瞅一瞅插件的整个源码）：
 
 ```
 #NAMESPACE is namespace to monitor.
@@ -129,9 +128,9 @@ done&lt; &lt;(&lt;fetch list of pod and containers from kubernetes cluster&gt;)
   attach-session -t &lt;session name&gt;\;
 ```
 
-After the plugin script runs, it will produce output similar to the image below. Each pod has its own window, and each container (if there is more than one) is split by the panes in its pod window, streaming logs as they arrive. The beauty of tmux can be seen below; with the proper configuration, you can even see which window has activity going on (see the white tabs).
+运行插件脚本后，它将在当前目录会生成一个同名的镜像。每个 pod 有一个窗口，每个容器（如果有多个）被分割成不同 pos 窗口，日志以数据流形式输出。 漂亮的tmux 如下；如果配置正确，你将会看到哪个窗口是否处于激活运行状态（可看到标签是白色的）。
 
-![Output of kmux plugin][8]
+![kmux 插件的输出][8]
 
 ### Conclusion
 
