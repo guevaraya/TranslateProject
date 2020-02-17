@@ -132,11 +132,11 @@ done&lt; &lt;(&lt;fetch list of pod and containers from kubernetes cluster&gt;)
 
 ![kmux 插件的输出][8]
 
-### Conclusion
+### 总结
 
-Aliases are always helpful for simple troubleshooting in Kubernetes environments. When the environment gets more complex, a kubectl plugin is a powerful option for using more advanced scripting. There are no limits on which programming language you can use to write kubectl plugins. The only requirements are that the naming convention in the path is executable, and it doesn't have the same name as an existing kubectl command.
+别名是在 Kubernetes 环境下常见的也有用的简易故障排查方法。当环境变得复杂，用高级脚本生成的kubectl 插件是一个很强大的方法。至于用哪个编程语言来编写 kubectl 插件是没有限制。唯一的要求是路径命名是可执行的，并且不能与已知的 kubectl 命令重复。
 
-To read the complete code or try the plugins I created, check my [kube-plugins-github][7] repository. Issues and pull requests are welcome.
+为了阅读完整的插件源码，我们尝试创建一个插件，请查看我的 [kube-plugins-github][7] 仓。欢迎提交问题和补丁。
 
 --------------------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ via: https://opensource.com/article/20/2/kubernetes-tmux-kubectl
 
 作者：[Abhishek Tamrakar][a]
 选题：[lujun9972][b]
-译者：[译者ID](https://github.com/译者ID)
+译者：[译者ID](https://github.com/guevaraya)
 校对：[校对者ID](https://github.com/校对者ID)
 
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
