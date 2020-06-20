@@ -56,6 +56,7 @@ In her words, it's possible to hear those same lessons learned from listening to
 ### 属于您的荣耀
 
 When asked what advice she has for other women wanting to engage with the open source community, Megan lights up. "Remember that open source has room for everyone. It can be daunting, but in my experience, people want to help. Ask for help when you need it, but also be clear on where you can contribute, how you can contribute, and what your needs are."
+当被问到给其他想参与到开源社区的女性哪些建议时，Megan 兴奋起来。“请记住在开源所有人都有一席之地。这个可能令人生畏，但是从我的经验来看，人们想要获取帮助，就可以去社区求助，但同时需要也可以为社区提供力所能及的贡献，，”
 
 She also recognizes that among all the voices in open source, a lack of centralized leadership can sometimes be felt, but she cautions against looking at it as a privileged role, reserved for only a few. "Be the leader you need. When there's a void in leadership, each individual can fill that void for themselves. Every contributor to open source is a leader, whether they're leading others, leading the community, or just leading themselves. Don't wait to be given permission and own your awesome."
 
