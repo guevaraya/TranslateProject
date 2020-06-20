@@ -50,8 +50,10 @@ As open source becomes a larger and larger part of the technology space, Megan i
 开源技术在技术领域占的比重越来越大，Megan 对未来抱有很大希望。“令人兴奋的是故事还没有结束。作为一个社区，我们仍然在努力解决问题，”她说：“还有很多东西关于开源技术需要我们学习，我们的外部环境不断发生变化，开源将用不同的方式进化着。我们需要正确的对话和找出如何共同进化。确保每个人都有一席之地。”
 
 In her words, it's possible to hear those same lessons learned from listening to her father's business calls—doing business is about solving problems and helping people. "Helping more people understand how to use and contribute to open source to solve problems is really rewarding. Whether it is to drive innovation, accelerate velocity, or achieve business goals, there are lots of ways to gain value from open source."
+用她的话说，经常听到这些都是从她的父亲生意电话里来的感悟，做生意就是解决问题并帮助别人。“帮助更多的人学习如何使用和贡献开源代码来解决问题的确是一件有益的事情。不管是推动创新，提供效率加快进度，还是实现业务目标，这些都是从开源代码中获取价值。”
 
 ### Own your awesome
+### 属于您的荣耀
 
 When asked what advice she has for other women wanting to engage with the open source community, Megan lights up. "Remember that open source has room for everyone. It can be daunting, but in my experience, people want to help. Ask for help when you need it, but also be clear on where you can contribute, how you can contribute, and what your needs are."
 
