@@ -8,10 +8,9 @@
 [#]: url: " "
 
 Mounting git commits as folders with NFS
+用NFS将Git提交挂载为目录文档
 ======
-
-Hello! The other day, I started wondering – has anyone ever made a FUSE filesystem for a git repository where all every commit is a folder? It turns out the answer is yes! There’s [giblefs][1], [GitMounter][2], and [git9][3] for Plan 9.
-
+大家好!某一天，我突发奇想-是否有人把git仓库制作一个FUSE文件系统把所有的提交做成目录文件呢？很显然这是有可能的！这就是所谓的9号计划：[giblefs][1], [GitMounter][2], and [git9][3]。
 But FUSE is pretty annoying to use on Mac – you need to install a kernel extension, and Mac OS seems to be making it harder and harder to install kernel extensions for security reasons. Also I had a few ideas for how to organize the filesystem differently than those projects.
 
 So I thought it would be fun to experiment with ways to mount filesystems on Mac OS other than FUSE, so I built a project that does that called [git-commit-folders][4]. It works (at least on my computer) with both FUSE and NFS, and there’s a broken WebDav implementation too.
